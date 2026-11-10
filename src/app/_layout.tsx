@@ -1,6 +1,6 @@
 import { fetch as streamingFetch } from 'expo/fetch';
 import { randomUUID } from 'expo-crypto';
-import { Stack } from 'expo-router';
+import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import { SQLiteProvider, useSQLiteContext } from 'expo-sqlite';
 import { StatusBar } from 'expo-status-bar';
 import { useMemo, type ReactNode } from 'react';
@@ -41,20 +41,40 @@ function AppServices({ children }: { children: ReactNode }) {
 export default function RootLayout() {
   const { colors, dark } = useTheme();
 
+  // Give the navigator the same colors as the screens, so the header and
+  // the screen transitions follow light and dark mode too.
+  const navigationTheme = useMemo(() => {
+    const base = dark ? DarkTheme : DefaultTheme;
+    return {
+      ...base,
+      colors: {
+        ...base.colors,
+        background: colors.background,
+        card: colors.background,
+        text: colors.text,
+        border: colors.border,
+        primary: colors.primary,
+      },
+    };
+  }, [colors, dark]);
+
   return (
     <SQLiteProvider databaseName="chat.db" onInit={migrate}>
       <AppServices>
-        <StatusBar style={dark ? 'light' : 'dark'} />
-        <Stack
-          screenOptions={{
-            headerStyle: { backgroundColor: colors.background },
-            headerTintColor: colors.text,
-            contentStyle: { backgroundColor: colors.background },
-          }}
-        >
-          <Stack.Screen name="index" options={{ title: 'Chats' }} />
-          <Stack.Screen name="chat/[id]" options={{ title: 'Chat' }} />
-        </Stack>
+        <ThemeProvider value={navigationTheme}>
+          <StatusBar style={dark ? 'light' : 'dark'} />
+          <Stack
+            screenOptions={{
+              // An opaque header, so content starts below it instead of under it.
+              headerStyle: { backgroundColor: colors.background },
+              headerTintColor: colors.text,
+              headerShadowVisible: false,
+            }}
+          >
+            <Stack.Screen name="index" options={{ title: 'Chats' }} />
+            <Stack.Screen name="chat/[id]" options={{ title: 'Chat' }} />
+          </Stack>
+        </ThemeProvider>
       </AppServices>
     </SQLiteProvider>
   );

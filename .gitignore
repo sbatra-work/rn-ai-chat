@@ -46,3 +46,6 @@ server/.env
 
 # test output
 coverage/
+
+# local tool output
+.argent/

@@ -5,6 +5,7 @@ import { Button } from '../../../components/Button';
 import { EmptyState } from '../../../components/EmptyState';
 import { spacing, useTheme } from '../../../lib/theme';
 import { useIsOnline } from '../../../lib/useIsOnline';
+import { useKeyboardVisible } from '../../../lib/useKeyboardVisible';
 import { Composer } from '../components/Composer';
 import { MessageList } from '../components/MessageList';
 import { useChat } from '../hooks/useChat';
@@ -21,6 +22,9 @@ export function ChatScreen({ conversationId, keyboardOffset = 0 }: Props) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const online = useIsOnline();
+  const keyboardVisible = useKeyboardVisible();
+  // The home indicator inset is only needed when the keyboard is not covering it.
+  const bottomPadding = keyboardVisible ? spacing.sm : Math.max(insets.bottom, spacing.sm);
   const chat = useChat(conversationId);
 
   if (!chat.loaded) {
@@ -66,7 +70,7 @@ export function ChatScreen({ conversationId, keyboardOffset = 0 }: Props) {
           </EmptyState>
         }
       />
-      <View style={{ paddingBottom: Math.max(insets.bottom, spacing.sm) }}>
+      <View style={{ paddingBottom: bottomPadding }}>
         <Composer
           streaming={chat.streaming}
           disabledReason={online ? undefined : 'You are offline'}

@@ -46,7 +46,7 @@ export function Composer({ streaming, disabledReason, onSend, onCancel }: Props)
           testID="composer-input"
           value={text}
           onChangeText={setText}
-          placeholder="Message"
+          placeholder="Ask a question"
           placeholderTextColor={colors.textMuted}
           accessibilityLabel="Message"
           accessibilityHint="Type your question"
