@@ -16,7 +16,11 @@ interface Props {
   keyboardOffset?: number;
 }
 
-const SUGGESTIONS = ['How does streaming work?', 'What happens when I am offline?'];
+const SUGGESTIONS = [
+  'How does streaming work?',
+  'What happens when I am offline?',
+  'What happens if the connection drops?',
+];
 
 export function ChatScreen({ conversationId, keyboardOffset = 0 }: Props) {
   const { colors } = useTheme();

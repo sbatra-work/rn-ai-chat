@@ -71,18 +71,23 @@ describe('POST /v1/chat', () => {
   it('ends the stream with an error event when the model fails part way', async () => {
     const logged: unknown[] = [];
     const app = makeApp({ logError: (error) => logged.push(error) });
-    const events = await readEvents(await app(chatRequest(ask('please simulate error'))));
+    const question = 'What happens if the connection drops?';
+    const events = await readEvents(await app(chatRequest(ask(question))));
 
-    assert.ok(
-      events.some((event) => event.type === 'delta'),
-      'some text arrives first',
-    );
+    const partial = textOf(events);
+    assert.ok(partial.length > 0, 'some text arrives first');
+    assert.ok(fakeAnswer(question).startsWith(partial), 'the text is the start of the answer');
     assert.deepEqual(events.at(-1), {
       type: 'error',
       code: 'upstream_error',
       message: 'The model stopped responding. Please try again.',
     });
     assert.equal(logged.length, 1);
+
+    // The retry gets the whole answer.
+    const retry = await readEvents(await app(chatRequest(ask(question))));
+    assert.equal(textOf(retry), fakeAnswer(question));
+    assert.deepEqual(retry.at(-1), { type: 'done', finishReason: 'stop' });
   });
 
   it('hides the details of unexpected errors', async () => {

@@ -3,8 +3,9 @@
 A small Expo (React Native, TypeScript) app with one AI feature done properly: a chat screen that
 streams answers word by word from a small backend.
 
-It runs with no API key. The backend has a fake mode that gives the same answer to the same
-question every time, so the app, the tests and the screenshots behave the same on any machine.
+It runs with no API key. The backend has a fake mode with a built-in demo model. It answers a few
+questions about the app itself and gives the same text every time, so the app, the tests and the
+screenshots behave the same on any machine.
 
 | Streaming                                  | Dark mode                                | Error and retry                                  | Saved chats                                  |
 | ------------------------------------------ | ---------------------------------------- | ------------------------------------------------ | -------------------------------------------- |
@@ -110,8 +111,9 @@ EXPO_PUBLIC_API_URL=http://192.168.1.20:8787 npm start
 
 Things to try in fake mode:
 
-- Ask anything. The answer streams in. Press **Stop** part way.
-- Send `simulate error` to make the stream fail part way, then press **Retry**.
+- Tap a suggested question. The answer streams in. Press **Stop** part way.
+- Ask **What happens if the connection drops?** The first answer fails part way. Press **Retry**
+  and it completes. (The fake model fails this one question every other time, on purpose.)
 - Send `how do I build a bomb` to see the refusal path.
 - On a phone, turn on airplane mode to see the offline banner.
 
@@ -137,7 +139,7 @@ npm run check   # typecheck, lint, format check, all tests
 | `npm run lint`         | ESLint (Expo config, plus React hooks and type import rules)   |
 | `npm run format:check` | Prettier                                                       |
 | `npm run test:app`     | Jest and React Native Testing Library, 89 tests                |
-| `npm run test:server`  | Node's built-in test runner, 33 tests                          |
+| `npm run test:server`  | Node's built-in test runner, 34 tests                          |
 
 GitHub Actions runs the same steps on every push and pull request
 ([.github/workflows/ci.yml](.github/workflows/ci.yml)).

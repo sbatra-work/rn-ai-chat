@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { readConfig } from '../src/config.ts';
 import { moderate } from '../src/moderation.ts';
-import { tokenize } from '../src/providers/fake.ts';
+import { fakeAnswer, tokenize } from '../src/providers/fake.ts';
 import { createOpenAiProvider } from '../src/providers/openai.ts';
 import { UpstreamError } from '../src/providers/types.ts';
 import { createRateLimiter } from '../src/rateLimit.ts';
@@ -85,6 +85,15 @@ describe('fake provider', () => {
     const text = 'One two,  three.\nFour';
     assert.equal(tokenize(text).join(''), text);
     assert.equal(tokenize(text).length, 4);
+  });
+
+  it('answers known topics and never echoes the question back', () => {
+    assert.match(fakeAnswer('How does streaming work?'), /server-sent event/);
+    assert.match(fakeAnswer('is my API key safe?'), /never leaves the server/);
+
+    const unknown = 'zzz What is the capital of France?';
+    assert.match(fakeAnswer(unknown), /demo model/);
+    assert.doesNotMatch(fakeAnswer(unknown), /zzz|France/);
   });
 });
 
