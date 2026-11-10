@@ -1,0 +1,9 @@
+# Deploy the same handler to Cloudflare Workers:
+#   cd server && npx wrangler deploy
+#   npx wrangler secret put LLM_API_KEY
+name = "rn-ai-chat-server"
+main = "src/worker.ts"
+compatibility_date = "2026-10-01"
+
+[vars]
+LLM_MODE = "fake"
