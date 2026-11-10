@@ -45,7 +45,7 @@ Captured on an iOS simulator (iPhone 17e, iOS 26.5, Expo Go) against the backend
 │    state/               chatReducer (pure), buildContext (pure)   │
 │    storage/             ChatRepository interface                  │
 │         │                 ├─ SQLite version (the app)             │
-│         │                 └─ in-memory version (tests)            │
+│         │                 └─ in-memory version (src/test)         │
 │         ▼                                                         │
 │  src/lib/               Not about chat                            │
 │    api/chatClient.ts    typed HTTP + stream client                │
@@ -210,6 +210,18 @@ memory, keyed by a random ID the app makes once per install. Moderation is a sho
 Both sit behind small interfaces and both are covered by tests, but neither is production strength.
 See below.
 
+## Limits
+
+What has and has not been checked, so nothing here is taken on trust:
+
+- **Checked on an iOS simulator by hand:** streaming, stop, retry, the error path, dark mode, and
+  chats surviving a restart.
+- **Checked by tests only:** the offline banner and the length cap.
+- **Not run:** Android, a deploy to Cloudflare Workers, and a live model. The OpenAI-compatible
+  provider is tested against a fake `fetch`, not a real endpoint.
+- **Not production strength by design:** the rate limiter and the moderation step, as described
+  above.
+
 ## What I'd improve next
 
 1. **Trust the device ID less.** It is sent by the client, so anyone can change it and get a fresh
@@ -240,7 +252,6 @@ See below.
 
 ## About this repo
 
-This is a code sample written for my portfolio. It contains no client code or data. I designed the
-architecture and the test plan and built it with an AI coding agent, reviewing the result.
+This is a code sample written for my portfolio. It contains no client code or data.
 
 MIT License.

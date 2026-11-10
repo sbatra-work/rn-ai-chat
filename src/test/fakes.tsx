@@ -1,7 +1,7 @@
 import { act, render } from '@testing-library/react-native';
 import type { ReactElement } from 'react';
 import type { ChatRepository } from '../features/chat/storage/chatRepository';
-import { createMemoryChatRepository } from '../features/chat/storage/memoryChatRepository';
+import { createMemoryChatRepository } from './memoryChatRepository';
 import type { Message } from '../features/chat/types';
 import type { ChatClient, StreamChatParams, StreamOutcome } from '../lib/api/chatClient';
 import { ServicesProvider, type Services } from '../lib/services';

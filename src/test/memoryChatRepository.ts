@@ -1,5 +1,5 @@
-import type { ConversationSummary, Message } from '../types';
-import { titleFrom, type ChatRepository } from './chatRepository';
+import type { ConversationSummary, Message } from '../features/chat/types';
+import { titleFrom, type ChatRepository } from '../features/chat/storage/chatRepository';
 
 interface Conversation {
   id: string;
@@ -8,7 +8,7 @@ interface Conversation {
   messages: Message[];
 }
 
-/** Keeps everything in memory. Used by tests, and handy for UI prototypes. */
+/** A ChatRepository that keeps everything in memory, for tests. */
 export function createMemoryChatRepository(seed: Message[] = []): ChatRepository {
   const conversations = new Map<string, Conversation>();
 

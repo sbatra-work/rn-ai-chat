@@ -1,7 +1,7 @@
 import { makeMessage } from '../../../../test/fakes';
 import { openTestDatabase } from '../../../../test/nodeSqlite';
 import { titleFrom, type ChatRepository } from '../chatRepository';
-import { createMemoryChatRepository } from '../memoryChatRepository';
+import { createMemoryChatRepository } from '../../../../test/memoryChatRepository';
 import { createSqliteChatRepository, getOrCreateDeviceId, migrate } from '../sqliteChatRepository';
 
 /**

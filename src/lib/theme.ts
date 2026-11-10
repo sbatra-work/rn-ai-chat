@@ -20,7 +20,6 @@ export interface Palette {
   assistantBubble: string;
   onAssistantBubble: string;
   danger: string;
-  dangerSurface: string;
   warningSurface: string;
   onWarningSurface: string;
 }
@@ -38,7 +37,6 @@ const light: Palette = {
   assistantBubble: '#EDEFF3',
   onAssistantBubble: '#14171F',
   danger: '#B3261E',
-  dangerSurface: '#FCEDEC',
   warningSurface: '#FFF2CC',
   onWarningSurface: '#4A3800',
 };
@@ -56,7 +54,6 @@ const dark: Palette = {
   assistantBubble: '#232730',
   onAssistantBubble: '#F1F3F7',
   danger: '#FFB4AB',
-  dangerSurface: '#3A1512',
   warningSurface: '#3D3000',
   onWarningSurface: '#FFE9A6',
 };

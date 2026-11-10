@@ -97,11 +97,7 @@ describe('createSseParser', () => {
     ]);
   });
 
-  it('drops an unfinished event on reset', () => {
-    const { messages, parser } = collect();
-    parser.feed('data: never finished\n');
-    parser.reset();
-    parser.feed('data: fresh\n\n');
-    expect(messages).toEqual([{ data: 'fresh' }]);
+  it('drops an event that never got its blank line', () => {
+    expect(parseAll(['data: finished\n\ndata: never finished\n'])).toEqual([{ data: 'finished' }]);
   });
 });

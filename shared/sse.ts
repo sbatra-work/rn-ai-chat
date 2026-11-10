@@ -9,6 +9,8 @@
  * Covers the parts of the SSE format this project uses: `data:` fields
  * (joined with newlines when repeated), `event:` fields, comment lines, and
  * all three line endings (LF, CRLF, CR). `id:` and `retry:` are ignored.
+ * An event that is still open when the stream ends is dropped, as the SSE
+ * spec requires.
  */
 
 export interface SseMessage {
@@ -21,11 +23,6 @@ export interface SseMessage {
 export interface SseParser {
   /** Add the next chunk of decoded text. */
   feed(chunk: string): void;
-  /**
-   * Forget any partial input, ready for a new stream. A trailing event with
-   * no blank line after it is dropped, as the SSE spec requires.
-   */
-  reset(): void;
 }
 
 export function createSseParser(onMessage: (message: SseMessage) => void): SseParser {
@@ -84,12 +81,6 @@ export function createSseParser(onMessage: (message: SseMessage) => void): SsePa
         start = i + 1;
       }
       buffer = buffer.slice(start);
-    },
-    reset() {
-      buffer = '';
-      dataLines = [];
-      eventName = undefined;
-      skipLeadingLf = false;
     },
   };
 }

@@ -2,7 +2,7 @@ import type { ChatTurn } from '../../../shared/protocol.ts';
 
 /**
  * The one seam between the HTTP layer and a language model.
- * To add a provider (Anthropic, a local model), implement this and pick it
+ * To add a provider (another API, a local model), implement this and pick it
  * in `createProvider`. Nothing else changes.
  */
 export interface ChatProvider {

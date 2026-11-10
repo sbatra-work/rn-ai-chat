@@ -4,7 +4,7 @@ import { MIN_TOUCH_SIZE, radius, spacing, useTheme } from '../lib/theme';
 interface Props {
   label: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary';
   disabled?: boolean;
   /** Extra context for screen readers, read after the label. */
   accessibilityHint?: string;
@@ -22,14 +22,9 @@ export function Button({
   testID,
 }: Props) {
   const { colors } = useTheme();
-  const background =
-    variant === 'primary' ? colors.primary : variant === 'danger' ? colors.danger : colors.surface;
-  const foreground =
-    variant === 'primary'
-      ? colors.onPrimary
-      : variant === 'danger'
-        ? colors.background
-        : colors.text;
+  const primary = variant === 'primary';
+  const background = primary ? colors.primary : colors.surface;
+  const foreground = primary ? colors.onPrimary : colors.text;
 
   return (
     <Pressable
@@ -44,7 +39,7 @@ export function Button({
       style={({ pressed }) => [
         styles.button,
         { backgroundColor: background, borderColor: colors.border },
-        variant === 'secondary' && styles.outlined,
+        !primary && styles.outlined,
         disabled && styles.disabled,
         pressed && styles.pressed,
         style,
